@@ -26,6 +26,17 @@ def load_config():
     cfg.setdefault("packet_samples", 2048)
     cfg.setdefault("timeout", 5)
     cfg.setdefault("ws_path", "/ws/wave")
+    cfg.setdefault("device_token", "")
+    cfg.setdefault("device_token_header", "x-device-token")
+    cfg.setdefault("headers", {})
+    cfg.setdefault("endpoints", {})
+    ep = cfg["endpoints"]
+    ep.setdefault("status", "/api/status")
+    ep.setdefault("memory_read", "/api/device/memory/read")
+    ep.setdefault("sessions", "/api/devices/sessions")
+    ep.setdefault("output_status", "/api/output/status")
+    cfg.setdefault("device_id_param", "deviceId")
+    cfg.setdefault("read_body_key", "address")
     cfg.setdefault("mode", "live")
     cfg["_root"] = ROOT
     cfg["fixtures_dir"] = _abs(cfg.get("fixtures_dir", "fixtures"))
@@ -130,11 +141,21 @@ def decode_value(raw, entry):
 
 
 # ---------- HTTP to the C# API ----------
+def _auth_headers(cfg):
+    """Content-Type plus the C# API auth token header (e.g. x-device-token),
+    plus any extra headers from config."""
+    h = {"Content-Type": "application/json"}
+    tok = cfg.get("device_token")
+    if tok:
+        h[cfg.get("device_token_header", "x-device-token")] = tok
+    h.update(cfg.get("headers") or {})
+    return h
+
 def _req(cfg, method, path, body=None):
     url = cfg["base_url"].rstrip("/") + path
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(url, data=data, method=method,
-                                 headers={"Content-Type": "application/json"})
+                                 headers=_auth_headers(cfg))
     with urllib.request.urlopen(req, timeout=cfg.get("timeout", 5)) as r:
         txt = r.read().decode()
     return json.loads(txt) if txt else None
@@ -145,13 +166,39 @@ def http_get_json(cfg, path):
 def http_post_json(cfg, path, body):
     return _req(cfg, "POST", path, body)
 
+def endpoint(cfg, key):
+    """Resolve a path from config.endpoints. Adding a new API = adding a key here,
+    not editing code."""
+    ep = (cfg.get("endpoints") or {}).get(key)
+    if not ep:
+        raise KeyError("no endpoint configured for '%s' (add it under config.endpoints)" % key)
+    return ep
+
+def _with_query(path, params):
+    params = {k: v for k, v in params.items() if v is not None}
+    if not params:
+        return path
+    sep = "&" if "?" in path else "?"
+    return path + sep + urllib.parse.urlencode(params)
+
+def call_api(cfg, key, method="GET", body=None, device=False, **query):
+    """Call a configured endpoint by key. device=True appends the deviceId query
+    param (name from config.device_id_param). Extra kwargs become query params."""
+    if cfg.get("mode") == "replay":
+        fp = os.path.join(cfg["fixtures_dir"], key + ".sample.json")
+        return _load_json(fp) if os.path.exists(fp) else None
+    path = endpoint(cfg, key)
+    if device:
+        query.setdefault(cfg.get("device_id_param", "deviceId"), resolve_device_id(cfg))
+    return _req(cfg, method, _with_query(path, query), body)
+
 def resolve_device_id(cfg):
     if cfg.get("device_id"):
         return cfg["device_id"]
     if cfg["mode"] == "replay":
         st = _load_json(os.path.join(cfg["fixtures_dir"], "status.sample.json"))
         return st.get("activeDeviceId", "rp-1")
-    st = http_get_json(cfg, "/api/status")
+    st = http_get_json(cfg, endpoint(cfg, "status"))
     return (st or {}).get("activeDeviceId") or "rp-1"
 
 def _extract_value(resp):
@@ -181,9 +228,9 @@ def read_register(address, cfg):
             return {"ok": False, "reason": "address %s not in replay fixture" % key}
         return {"ok": True, "raw": int(str(val), 0)}
     try:
-        dev = resolve_device_id(cfg)
-        path = "/api/device/memory/read?deviceId=" + urllib.parse.quote(str(dev))
-        resp = http_post_json(cfg, path, {"address": _norm_addr(address)})
+        resp = call_api(cfg, "memory_read", method="POST",
+                        body={cfg.get("read_body_key", "address"): _norm_addr(address)},
+                        device=True)
         raw = _extract_value(resp)
         if raw is None:
             return {"ok": False, "reason": "could not parse read response: %r" % (resp,)}

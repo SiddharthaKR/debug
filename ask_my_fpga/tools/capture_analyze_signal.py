@@ -29,8 +29,12 @@ def capture_ws(cfg, channel, nsamples):
     import websocket  # websocket-client
     dev = fc.resolve_device_id(cfg)
     url = (cfg["base_url"].replace("http", "ws", 1).rstrip("/")
-           + cfg["ws_path"] + "?deviceId=" + str(dev))
-    ws = websocket.create_connection(url, timeout=cfg.get("timeout", 5))
+           + cfg["ws_path"] + "?" + cfg.get("device_id_param","deviceId") + "=" + str(dev))
+    hdrs = []
+    tok = cfg.get("device_token")
+    if tok:
+        hdrs.append("%s: %s" % (cfg.get("device_token_header", "x-device-token"), tok))
+    ws = websocket.create_connection(url, timeout=cfg.get("timeout", 5), header=hdrs)
     counts, dec = [], 1
     try:
         while len(counts) < nsamples:

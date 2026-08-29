@@ -11,5 +11,16 @@
   "fixtures_dir": "fixtures",
   "catalog_path": "fixtures/setting.sample.json",
   "mux_map": null,
-  "_comment": "mode: 'live' -> talk to base_url + real catalog_path; 'replay' -> use fixtures. adc_fullscale_v: 1.0 for LV (+/-1V), 20.0 for HV. device_id null -> follow activeDeviceId from /api/status."
+  "_comment": "mode: 'live' -> talk to base_url + real catalog_path; 'replay' -> use fixtures. adc_fullscale_v: 1.0 for LV (+/-1V), 20.0 for HV. device_id null -> follow activeDeviceId from /api/status.",
+  "device_token": "",
+  "device_token_header": "x-device-token",
+  "headers": {},
+  "endpoints": {
+    "status": "/api/status",
+    "memory_read": "/api/device/memory/read",
+    "sessions": "/api/devices/sessions",
+    "output_status": "/api/output/status"
+  },
+  "device_id_param": "deviceId",
+  "read_body_key": "address"
 }

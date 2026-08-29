@@ -41,6 +41,8 @@ Run each as `python3 tools/<name>.py [args]`. All print JSON.
 - `capture_analyze_signal.py [LABEL] [--channel N] [--nsamples K]` — capture from
   `/ws/wave` and return a scalar summary: RMS, mean/DC, peak, min, max, dominant
   frequency, top FFT peaks, clipping (kind=measurement/unknown).
+- `get_output_status.py` — live generator/output status for the active device (kind=fact).
+- `get_sessions.py` — registered device sessions + active device (kind=fact).
 
 ## How to answer typical questions
 - "What is PI_SET_KP?" → `get_parameter.py PI_SET_KP`; report value + address, kind=fact.

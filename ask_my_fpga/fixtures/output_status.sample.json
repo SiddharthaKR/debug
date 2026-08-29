@@ -1,0 +1,3 @@
+{ "deviceId": "rp-1",
+  "channel1": { "enabled": true,  "waveform": "sine", "frequency": 1000000, "amplitude": 0.5 },
+  "channel2": { "enabled": false, "waveform": "dc",   "offset": 0.0 } }
