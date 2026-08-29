@@ -2,7 +2,7 @@
 
 A read-only agent that answers natural-language questions about a Red Pitaya FPGA
 by inspecting the live hardware through the existing **SharpRPL C# API** and the
-`ntt_qctrl_seeting.json` register catalog. Built to run under a coding-agent
+`seeting.json` register catalog. Built to run under a coding-agent
 harness (pi.dev or opencode) driving a local LLM (gemma4 via vLLM).
 
 ## Layout
@@ -25,7 +25,7 @@ ask_my_fpga/
 ## Configure (`config.json`)
 - `mode`: `replay` (fixtures, no hardware) or `live` (talk to the C# API).
 - `base_url`: the SharpRPL server, e.g. `http://localhost:5000`.
-- `catalog_path`: path to the real `ntt_qctrl_seeting.json` (for live use).
+- `catalog_path`: path to the real `setting.json` (for live use).
 - `adc_fullscale_v`: `1.0` for LV (±1 V), `20.0` for HV.
 - `device_id`: pin a device, or `null` to follow `activeDeviceId` from `/api/status`.
 - `mux_map` (optional): `{ "NODE_SEL": { "0": "SRC_A", "1": "SRC_B" } }` to let

@@ -9,7 +9,7 @@
   "ws_path": "/ws/wave",
   "mode": "replay",
   "fixtures_dir": "fixtures",
-  "catalog_path": "fixtures/ntt_qctrl_seeting.sample.json",
+  "catalog_path": "fixtures/setting.sample.json",
   "mux_map": null,
   "_comment": "mode: 'live' -> talk to base_url + real catalog_path; 'replay' -> use fixtures. adc_fullscale_v: 1.0 for LV (+/-1V), 20.0 for HV. device_id null -> follow activeDeviceId from /api/status."
 }

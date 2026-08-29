@@ -2,7 +2,7 @@
 
 Provenance kinds emitted by every tool:
   fact        - value read live from hardware (via the C# memory/read API)
-  config      - static metadata from the register catalog (ntt_qctrl_seeting.json)
+  config      - static metadata from the register catalog (setting.json)
   measurement - computed from acquired signal samples
   unknown     - could not be resolved/verified (never a silent wrong value)
 """
@@ -58,7 +58,7 @@ def _norm_addr(a):
     return "0x%08X" % int(s, 16) if s.lower().startswith("0x") else "0x%08X" % int(s)
 
 def load_catalog(cfg):
-    """Load ntt_qctrl_seeting.json. Detect the known duplicate-alias-key bug so
+    """Load seeting.json. Detect the known duplicate-alias-key bug so
     those registers resolve to UNKNOWN instead of a silently-wrong address."""
     _DUPS.clear()
     cat = _load_json(cfg["catalog_path"])

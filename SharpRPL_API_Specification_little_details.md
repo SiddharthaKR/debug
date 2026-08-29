@@ -193,7 +193,7 @@ Streams raw `RpPacket.RawPacket` as binary for the specified device. The `device
 
 ---
 
-## 8. Register catalog — `ntt_qctrl_seeting.json`
+## 8. Register catalog — `seeting.json`
 
 Named-register catalog consumed against the memory R/W API. Top-level:
 
