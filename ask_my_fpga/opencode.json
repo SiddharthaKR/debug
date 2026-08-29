@@ -1,0 +1,29 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "vllm-local/gemma4",
+  "provider": {
+    "vllm-local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local vLLM (gemma4)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8000/v1",
+        "apiKey": "dummy"
+      },
+      "models": {
+        "gemma4": {
+          "name": "gemma4 (vLLM)"
+        }
+      }
+    }
+  },
+  "permission": {
+    "bash": {
+      "*": "deny",
+      "python3 tools/*": "allow",
+      "python tools/*": "allow"
+    },
+    "edit": "deny",
+    "write": "deny",
+    "patch": "deny"
+  }
+}
