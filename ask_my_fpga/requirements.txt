@@ -1,0 +1,4 @@
+# The five register/topology tools use only the Python standard library.
+# The signal tool needs these:
+numpy>=1.21
+websocket-client>=1.5   # live /ws/wave capture only (not needed for replay)

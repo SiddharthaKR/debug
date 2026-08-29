@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "endianness": "little",
+  "aliases": {
+    "PI_SETPOINT": "0x40330100",
+    "PI_SET_KP": "0x40330108",
+    "PI_SET_KI": "0x4033010C",
+    "PI_SET_KD": "0x40330110",
+    "MIX_PINC": "0x40320104",
+    "MIX_BETA": "0x40320108",
+    "BPF_B0": "0x40310100",
+    "BPF_A1": "0x40310110",
+    "BPF_S00": "0x40310200",
+    "BPF_S00": "0x40310204",
+    "BPF_S00": "0x40310208",
+    "BPF_S00": "0x4031020C",
+    "BPF_MCOS": "0x40310300",
+    "BPF_MSIN": "0x40310300",
+    "SCOPE0_SEL": "0x40300010",
+    "LPF0_SEL": "0x40300014"
+  },
+  "registers": [
+    {"address":"PI_SETPOINT","type":"q","format":"Q15.16","value":0.0},
+    {"address":"PI_SET_KP","type":"q","format":"Q15.16","value":0.0},
+    {"address":"PI_SET_KI","type":"q","format":"Q15.16","value":0.0},
+    {"address":"PI_SET_KD","type":"q","format":"Q15.16","value":0.0},
+    {"address":"MIX_PINC","type":"uint32","value":0},
+    {"address":"MIX_BETA","type":"q","format":"Q15.16","value":0.0},
+    {"address":"BPF_B0","type":"q","format":"Q1.23","value":0.0},
+    {"address":"BPF_A1","type":"q","format":"Q1.23","value":0.0},
+    {"address":"BPF_S00","type":"q","format":"Q1.23","value":0.0},
+    {"address":"BPF_S01","type":"q","format":"Q1.23","value":0.0},
+    {"address":"BPF_MCOS","type":"q","format":"Q15.16","value":0.0},
+    {"address":"BPF_MSIN","type":"q","format":"Q15.16","value":0.0},
+    {"address":"SCOPE0_SEL","type":"uint32","value":0},
+    {"address":"LPF0_SEL","type":"uint32","value":0}
+  ]
+}

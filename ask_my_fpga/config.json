@@ -1,0 +1,15 @@
+{
+  "base_url": "http://localhost:5000",
+  "device_id": null,
+  "adc_fullscale_v": 1.0,
+  "adc_bits": 14,
+  "packet_samples": 2048,
+  "packet_magic": "0xDEADBEEF",
+  "timeout": 5,
+  "ws_path": "/ws/wave",
+  "mode": "replay",
+  "fixtures_dir": "fixtures",
+  "catalog_path": "fixtures/ntt_qctrl_seeting.sample.json",
+  "mux_map": null,
+  "_comment": "mode: 'live' -> talk to base_url + real catalog_path; 'replay' -> use fixtures. adc_fullscale_v: 1.0 for LV (+/-1V), 20.0 for HV. device_id null -> follow activeDeviceId from /api/status."
+}
