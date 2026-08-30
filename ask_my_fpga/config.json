@@ -25,5 +25,6 @@
   "read_body_key": "address",
   "bypass_proxy": true,
   "verify_tls": false,
-  "ca_bundle": null
+  "ca_bundle": null,
+  "topology_path": "topology/topology.yaml"
 }

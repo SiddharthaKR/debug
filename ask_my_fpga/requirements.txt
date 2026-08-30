@@ -2,3 +2,4 @@
 # The signal tool needs these:
 numpy>=1.21
 websocket-client>=1.5   # live /ws/wave capture only (not needed for replay)
+pyyaml>=6.0   # topology tools

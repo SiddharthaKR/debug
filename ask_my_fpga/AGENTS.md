@@ -37,8 +37,11 @@ Run each as `python3 tools/<name>.py [args]`. All print JSON.
 - `get_register_info.py NAME` — catalog metadata for one register (kind=config/unknown).
 - `get_parameter.py NAME` — live value + decoded engineering units (kind=fact/unknown).
 - `get_fpga_state.py [--modules PI,MIX]` — curated per-module live snapshot (kind=fact).
-- `get_signal_path.py [TARGET]` — live `*_SEL` mux readings; resolves a chain only
-  if a mux map is configured, else the path is `unknown` by design (kind=fact/unknown).
+- `get_signal_path.py TARGET` — trace the live signal path upstream of a node
+  (e.g. DAC0, SCOPE0): fixed wiring = config, live mux selectors = fact, plus each
+  mux's `alternatives`. Answers "signal path to X" and "what can affect X" (kind=fact).
+- `get_affecting_parameters.py TARGET` — the config registers of every module on X's
+  upstream path. Which one explains a signal is INTERPRETATION, not fact (kind=config).
 - `capture_analyze_signal.py [LABEL] [--channel N] [--nsamples K]` — capture from
   `/ws/wave` and return a scalar summary: RMS, mean/DC, peak, min, max, dominant
   frequency, top FFT peaks, clipping (kind=measurement/unknown).
@@ -48,8 +51,11 @@ Run each as `python3 tools/<name>.py [args]`. All print JSON.
 ## How to answer typical questions
 - "What is PI_SET_KP?" → `get_parameter.py PI_SET_KP`; report value + address, kind=fact.
 - "What registers belong to PI?" → `get_modules.py`, then `get_register_info.py` as needed.
-- "What is the signal path to DAC0?" → `get_signal_path.py DAC0`; if unknown, present
-  the live selector values as facts and say the mapping isn't configured.
+- "What is the signal path to DAC0?" → `get_signal_path.py DAC0`; report the live
+  path, tagging fixed hops as documented (config) and selector hops as measured (fact).
+- "What modules can affect DAC0?" → `get_signal_path.py DAC0`; the `upstream_nodes`
+  are the current influencers, and each mux's `alternatives` are what could affect it if rerouted.
+- "Which parameters affect DAC0?" → `get_affecting_parameters.py DAC0`.
 - "Why does DAC0 look noisy?" → do NOT assert a cause first. Read the signal path /
   selectors, inspect relevant module state, `capture_analyze_signal.py`, then report
   observations (facts + measurements) and only then list *possible* causes as

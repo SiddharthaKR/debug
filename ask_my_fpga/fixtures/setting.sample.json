@@ -1,38 +1,533 @@
 {
-  "version": 1,
-  "endianness": "little",
-  "aliases": {
-    "PI_SETPOINT": "0x40330100",
-    "PI_SET_KP": "0x40330108",
-    "PI_SET_KI": "0x4033010C",
-    "PI_SET_KD": "0x40330110",
-    "MIX_PINC": "0x40320104",
-    "MIX_BETA": "0x40320108",
-    "BPF_B0": "0x40310100",
-    "BPF_A1": "0x40310110",
-    "BPF_S00": "0x40310200",
-    "BPF_S00": "0x40310204",
-    "BPF_S00": "0x40310208",
-    "BPF_S00": "0x4031020C",
-    "BPF_MCOS": "0x40310300",
-    "BPF_MSIN": "0x40310300",
-    "SCOPE0_SEL": "0x40300010",
-    "LPF0_SEL": "0x40300014"
+ "version": 1,
+ "endianness": "little",
+ "aliases": {
+  "FPGA_VERSION": "0x40300000",
+  "LPF0_BYPASS": "0x40300004",
+  "LPF0_STAGE": "0x40300008",
+  "LPF0_ALPAH": "0x4030000C",
+  "LPF1_BYPASS": "0x40300010",
+  "LPF1_STAGE": "0x40300014",
+  "LPF1_ALPAH": "0x40300018",
+  "LPF2_BYPASS": "0x4030001C",
+  "LPF2_STAGE": "0x40300020",
+  "LPF2_ALPAH": "0x40300024",
+  "PI0_SET_SP": "0x40300028",
+  "PI0_SET_KP": "0x4030002C",
+  "PI0_SET_KI": "0x40300030",
+  "PI0_SET_KD": "0x40300034",
+  "PI0_OUT_MIN": "0x40300038",
+  "PI0_OUT_MAX": "0x4030003C",
+  "PI0_PAUSE_D": "0x40300040",
+  "PI0_PAUSE_P": "0x40300044",
+  "PI0_PAUSE_I": "0x40300048",
+  "PI0_AUTO_RESET": "0x4030004C",
+  "PI1_SET_SP": "0x40300050",
+  "PI1_SET_KP": "0x40300054",
+  "PI1_SET_KI": "0x40300058",
+  "PI1_SET_KD": "0x4030005C",
+  "PI1_OUT_MIN": "0x40300060",
+  "PI1_OUT_MAX": "0x40300064",
+  "PI1_PAUSE_D": "0x40300068",
+  "PI1_PAUSE_P": "0x4030006C",
+  "PI1_PAUSE_I": "0x40300070",
+  "PI1_AUTO_RESET": "0x40300074",
+  "PI_SEL": "0x40300078",
+  "OUT_SEL": "0x4030007C",
+  "SCOPE0_SEL": "0x40300080",
+  "SCOPE1_SEL": "0x40300084",
+  "INPUT_SEL": "0x40300088",
+  "GAIN0_GAIN": "0x4030008C",
+  "GAIN0_MAX": "0x40300090",
+  "GAIN0_MIN": "0x40300094",
+  "GAIN0_VOFFSET": "0x40300098",
+  "GAIN0_DITHER_AMP": "0x4030009C",
+  "GAIN1_GAIN": "0x403000A0",
+  "GAIN1_MAX": "0x403000A4",
+  "GAIN1_MIN": "0x403000A8",
+  "GAIN1_VOFFSET": "0x403000AC",
+  "GAIN1_DITHER_AMP": "0x403000B0",
+  "GAIN2_GAIN": "0x403000B4",
+  "GAIN2_MAX": "0x403000B8",
+  "GAIN2_MIN": "0x403000BC",
+  "GAIN2_VOFFSET": "0x403000C0",
+  "GAIN2_DITHER_AMP": "0x403000C4",
+  "GAIN3_GAIN": "0x403000C8",
+  "GAIN3_MAX": "0x403000CC",
+  "GAIN3_MIN": "0x403000D0",
+  "GAIN3_VOFFSET": "0x403000D4",
+  "GAIN3_DITHER_AMP": "0x403000D8",
+  "SVF_B0": "0x403000DC",
+  "SVF_B1": "0x403000E0",
+  "SVF_B2": "0x403000E4",
+  "SVF_A1": "0x403000E8",
+  "SVF_A2": "0x403000EC",
+  "BPF_B0": "0x403000F0",
+  "BPF_B1": "0x403000F4",
+  "BPF_B2": "0x403000F8",
+  "BPF_A1": "0x403000FC",
+  "BPF_A2": "0x40300100",
+  "BPF_S00": "0x40300104",
+  "BPF_S01": "0x40300108",
+  "BPF_S10": "0x4030010C",
+  "BPF_S11": "0x40300110",
+  "BPF_MCOS": "0x40300114",
+  "BPF_MSIN": "0x40300118",
+  "MIX_EN": "0x4030011C",
+  "MIX_AUTO_CAL": "0x40300120",
+  "MIX_SELECT": "0x40300124",
+  "MIX_OVF": "0x40300128",
+  "MIX_PHASE_INC": "0x4030012C",
+  "MIX_BETA_SHIFT": "0x40300130",
+  "MIX_MANUAL_PO": "0x40300134",
+  "MIX_CURRENT_PO": "0x40300138"
+ },
+ "registers": [
+  {
+   "address": "FPGA_VERSION",
+   "type": "uint32",
+   "value": 0
   },
-  "registers": [
-    {"address":"PI_SETPOINT","type":"q","format":"Q15.16","value":0.0},
-    {"address":"PI_SET_KP","type":"q","format":"Q15.16","value":0.0},
-    {"address":"PI_SET_KI","type":"q","format":"Q15.16","value":0.0},
-    {"address":"PI_SET_KD","type":"q","format":"Q15.16","value":0.0},
-    {"address":"MIX_PINC","type":"uint32","value":0},
-    {"address":"MIX_BETA","type":"q","format":"Q15.16","value":0.0},
-    {"address":"BPF_B0","type":"q","format":"Q1.23","value":0.0},
-    {"address":"BPF_A1","type":"q","format":"Q1.23","value":0.0},
-    {"address":"BPF_S00","type":"q","format":"Q1.23","value":0.0},
-    {"address":"BPF_S01","type":"q","format":"Q1.23","value":0.0},
-    {"address":"BPF_MCOS","type":"q","format":"Q15.16","value":0.0},
-    {"address":"BPF_MSIN","type":"q","format":"Q15.16","value":0.0},
-    {"address":"SCOPE0_SEL","type":"uint32","value":0},
-    {"address":"LPF0_SEL","type":"uint32","value":0}
-  ]
+  {
+   "address": "LPF0_BYPASS",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "LPF0_STAGE",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "LPF0_ALPAH",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "LPF1_BYPASS",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "LPF1_STAGE",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "LPF1_ALPAH",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "LPF2_BYPASS",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "LPF2_STAGE",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "LPF2_ALPAH",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_SET_SP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_SET_KP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_SET_KI",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_SET_KD",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_OUT_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_OUT_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_PAUSE_D",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI0_PAUSE_P",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI0_PAUSE_I",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI0_AUTO_RESET",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI1_SET_SP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI1_SET_KP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI1_SET_KI",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI1_SET_KD",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI1_OUT_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI1_OUT_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI1_PAUSE_D",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI1_PAUSE_P",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI1_PAUSE_I",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI1_AUTO_RESET",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "SCOPE0_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "SCOPE1_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "INPUT_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "GAIN0_GAIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN0_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN0_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN0_VOFFSET",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN0_DITHER_AMP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN1_GAIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN1_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN1_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN1_VOFFSET",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN1_DITHER_AMP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN2_GAIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN2_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN2_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN2_VOFFSET",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN2_DITHER_AMP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_GAIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_VOFFSET",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_DITHER_AMP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "SVF_B0",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "SVF_B1",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "SVF_B2",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "SVF_A1",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "SVF_A2",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_B0",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_B1",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_B2",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_A1",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_A2",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_S00",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_S01",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_S10",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_S11",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_MCOS",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_MSIN",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "MIX_EN",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_AUTO_CAL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_SELECT",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_OVF",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_PHASE_INC",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_BETA_SHIFT",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_MANUAL_PO",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_CURRENT_PO",
+   "type": "uint32",
+   "value": 0
+  }
+ ]
 }
