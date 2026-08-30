@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Local & proprietary — NEVER push (kept on your machine only)
+config.json                     # has your token / base_url
+topology/topology.yaml          # your real datapath
+fixtures/setting.sample.json    # your register names
+fixtures/mem.sample.json        # your register values
+
+# scratch
+_to_delete/
+*.tgz
