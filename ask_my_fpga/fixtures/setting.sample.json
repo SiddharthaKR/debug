@@ -80,7 +80,13 @@
   "MIX_PHASE_INC": "0x4030012C",
   "MIX_BETA_SHIFT": "0x40300130",
   "MIX_MANUAL_PO": "0x40300134",
-  "MIX_CURRENT_PO": "0x40300138"
+  "MIX_CURRENT_PO": "0x40300138",
+  "OUT_GAIN0_SEL": "0x40350000",
+  "OUT_GAIN1_SEL": "0x40350004",
+  "OUT_GAIN2_SEL": "0x40350008",
+  "OUT_GAIN3_SEL": "0x4035000C",
+  "PI_LPF1_SEL": "0x40350010",
+  "PI_I_SEL": "0x40350014"
  },
  "registers": [
   {
@@ -526,6 +532,36 @@
   },
   {
    "address": "MIX_CURRENT_PO",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN0_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN1_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN2_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN3_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI_LPF1_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI_I_SEL",
    "type": "uint32",
    "value": 0
   }

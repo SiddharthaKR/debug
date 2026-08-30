@@ -1,32 +1,31 @@
-# Datapath extracted from dsp_tp.sv via Copilot. Consumed by get_signal_path /
-# get_affecting_parameters. Rule: every wire is EITHER a fixed_edge (hardwired)
-# OR a selector source (mux-controlled), never both.
+# Ask-My-FPGA datapath topology (dsp_tp.sv), from RTL + register maps.
+# Rule: every wire is EITHER a fixed_edge (hardwired) OR a selector source (mux), never both.
 version: 1
 
 nodes:
+  # sources
   ADC0: {kind: source}
   ADC1: {kind: source}
   ASG0: {kind: source}
   ASG1: {kind: source}
-  BPF:  {kind: process, params_prefix: BPF}
-  SVF:  {kind: process, params_prefix: SVF}
-  MIX:  {kind: process, params_prefix: MIX}
-  INPUT_SEL: {kind: process, params_prefix: INPUT_SEL}
-  LPF0: {kind: process, params_prefix: LPF0}
-  PI0:  {kind: process, params_prefix: PI0}
-  PI0_P: {kind: process, params_prefix: PI0}
-  PI0_I: {kind: process, params_prefix: PI0}
-  PI_SEL: {kind: process, params_prefix: PI_SEL}
-  LPF1: {kind: process, params_prefix: LPF1}
-  PI1:  {kind: process, params_prefix: PI1}
-  LPF2: {kind: process, params_prefix: LPF2}
-  OUT_SEL: {kind: process, params_prefix: OUT_SEL}
-  GAIN0: {kind: process, params_prefix: GAIN0}
-  GAIN1: {kind: process, params_prefix: GAIN1}
-  GAIN2: {kind: process, params_prefix: GAIN2}
-  GAIN3: {kind: process, params_prefix: GAIN3}
-  SCOPE0_SEL: {kind: process, params_prefix: SCOPE0_SEL}
-  SCOPE1_SEL: {kind: process, params_prefix: SCOPE1_SEL}
+  FGEN: {kind: source}
+  # processing
+  BPF:    {kind: process, params_prefix: BPF}
+  SVF:    {kind: process, params_prefix: SVF}
+  MIX:    {kind: process, params_prefix: MIX}
+  DITHER: {kind: process, params_prefix: MIX}   # dither generator (fed by SVF)
+  LPF0:   {kind: process, params_prefix: LPF0}
+  PI0:    {kind: process, params_prefix: PI0}
+  PI0_P:  {kind: process, params_prefix: PI0}    # P-term tap
+  PI0_I:  {kind: process, params_prefix: PI0}    # I-term tap
+  LPF1:   {kind: process, params_prefix: LPF1}
+  PI1:    {kind: process, params_prefix: PI1}
+  LPF2:   {kind: process, params_prefix: LPF2}
+  GAIN0:  {kind: process, params_prefix: GAIN0}
+  GAIN1:  {kind: process, params_prefix: GAIN1}
+  GAIN2:  {kind: process, params_prefix: GAIN2}
+  GAIN3:  {kind: process, params_prefix: GAIN3}
+  # sinks
   DAC0: {kind: sink}
   DAC1: {kind: sink}
   SPI_DAC0: {kind: sink}
@@ -37,6 +36,8 @@ nodes:
 fixed_edges:
   - [ADC0, BPF]
   - [ADC1, SVF]
+  - [BPF, MIX]        # MIX signal input (.din = dsp_signal[BPF])
+  - [SVF, DITHER]     # SVF output creates the dither sin/cos reference
   - [LPF0, PI0]
   - [PI0, PI0_P]
   - [PI0, PI0_I]
@@ -47,33 +48,13 @@ fixed_edges:
   - [GAIN3, SPI_DAC1]
 
 selectors:
-  - dest: LPF0
-    register: INPUT_SEL
-    sources: {0: ADC0, 1: MIX}
-  - dest: LPF1
-    register: PI_SEL
-    sources: {0: ASG1, 1: PI0, 2: PI0_P, 3: PI0_I}
-  - dest: PI1
-    register: PI_SEL
-    sources: {0: ASG1, 1: PI0, 2: PI0_P, 3: PI0_I}
-  - dest: GAIN0
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: GAIN1
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: GAIN2
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: GAIN3
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: SCOPE0
-    register: SCOPE0_SEL
-    sources: {0: ADC0, 1: LPF0, 2: DAC0, 3: SPI_DAC0}
-  - dest: SCOPE1
-    register: SCOPE1_SEL
-    sources: {0: ADC1, 1: LPF0, 2: DAC0, 3: SPI_DAC0}
-  - dest: MIX
-    register: MIX_SELECT
-    sources: {0: BPF, 1: SVF}   # confirm which value is which
+  - {dest: LPF0,   register: INPUT_SEL,     field: "[0]",   sources: {0: ADC0, 1: MIX}}
+  - {dest: MIX,    register: MIX_SELECT,    field: "[2]",   sources: {0: FGEN, 1: DITHER}}   # mixing reference
+  - {dest: GAIN0,  register: OUT_GAIN0_SEL, field: "[0]",   sources: {0: LPF1, 1: LPF2}}
+  - {dest: GAIN1,  register: OUT_GAIN1_SEL, field: "[0]",   sources: {0: LPF1, 1: LPF2}}
+  - {dest: GAIN2,  register: OUT_GAIN2_SEL, field: "[0]",   sources: {0: LPF1, 1: LPF2}}
+  - {dest: GAIN3,  register: OUT_GAIN3_SEL, field: "[0]",   sources: {0: LPF1, 1: LPF2}}
+  - {dest: LPF1,   register: PI_LPF1_SEL,   field: "[1:0]", sources: {0: ASG1, 1: PI0_P, 2: PI0_I, 3: PI0}}
+  - {dest: PI1,    register: PI_I_SEL,      field: "[1:0]", sources: {0: ASG1, 1: PI0_P, 2: PI0_I, 3: PI0}}
+  - {dest: SCOPE0, register: SCOPE0_SEL,    field: "[2:0]", sources: {0: ADC0, 1: LPF2, 2: DAC0, 3: DAC1}}
+  - {dest: SCOPE1, register: SCOPE1_SEL,    field: "[2:0]", sources: {0: ADC1, 1: LPF2, 2: DAC0, 3: DAC1}}
