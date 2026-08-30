@@ -22,5 +22,6 @@
     "output_status": "/api/output/status"
   },
   "device_id_param": "deviceId",
-  "read_body_key": "address"
+  "read_body_key": "address",
+  "bypass_proxy": true
 }

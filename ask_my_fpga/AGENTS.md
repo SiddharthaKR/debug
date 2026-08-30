@@ -32,6 +32,7 @@ do not work around it.
 ## Tools
 Run each as `python3 tools/<name>.py [args]`. All print JSON.
 
+- `get_status.py` — server reachability + status snapshot (kind=fact). Run this first.
 - `get_modules.py` — list FPGA modules (kind=config).
 - `get_register_info.py NAME` — catalog metadata for one register (kind=config/unknown).
 - `get_parameter.py NAME` — live value + decoded engineering units (kind=fact/unknown).

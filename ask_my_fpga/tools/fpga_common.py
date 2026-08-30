@@ -37,6 +37,7 @@ def load_config():
     ep.setdefault("output_status", "/api/output/status")
     cfg.setdefault("device_id_param", "deviceId")
     cfg.setdefault("read_body_key", "address")
+    cfg.setdefault("bypass_proxy", True)
     cfg.setdefault("mode", "live")
     cfg["_root"] = ROOT
     cfg["fixtures_dir"] = _abs(cfg.get("fixtures_dir", "fixtures"))
@@ -151,12 +152,18 @@ def _auth_headers(cfg):
     h.update(cfg.get("headers") or {})
     return h
 
+def _opener(cfg):
+    # bypass any system/corporate proxy for local/LAN API calls (avoids 403 tunnel)
+    if cfg.get("bypass_proxy", True):
+        return urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    return urllib.request.build_opener()
+
 def _req(cfg, method, path, body=None):
     url = cfg["base_url"].rstrip("/") + path
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(url, data=data, method=method,
                                  headers=_auth_headers(cfg))
-    with urllib.request.urlopen(req, timeout=cfg.get("timeout", 5)) as r:
+    with _opener(cfg).open(req, timeout=cfg.get("timeout", 5)) as r:
         txt = r.read().decode()
     return json.loads(txt) if txt else None
 
