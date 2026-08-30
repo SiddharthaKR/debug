@@ -1,0 +1,69 @@
+# FORMAT EXAMPLE for the Ask-My-FPGA signal-path feature.
+# Copilot fills the real values from dsp_tp.sv. Structure below is transcribed
+# from the block diagram; selector value->source maps are placeholders to fill.
+#
+# CORE RULE: every wire is classified exactly ONCE ->
+#   - fixed_edges : hardwired, controlled by NO register
+#   - selectors   : chosen by a MUX register (never also a fixed_edge)
+version: 1
+
+nodes:
+  # sources
+  ADC0: {kind: source}
+  ADC1: {kind: source}
+  ASG0: {kind: source}
+  ASG1: {kind: source}
+  FGEN: {kind: source}
+  # processing (params_prefix = register-name prefix in ntt_qctrl_seeting.json)
+  BPF:   {kind: process, params_prefix: BPF}
+  SVF:   {kind: process, params_prefix: SVF}
+  MIX:   {kind: process, params_prefix: MIX}
+  LPF0:  {kind: process, params_prefix: LPF0}
+  PI:    {kind: process, params_prefix: PI}
+  LPF1:  {kind: process, params_prefix: LPF1}
+  LPF2:  {kind: process, params_prefix: LPF2}
+  GAIN0: {kind: process, params_prefix: GAIN0}
+  GAIN1: {kind: process, params_prefix: GAIN1}
+  GAIN2: {kind: process, params_prefix: GAIN2}
+  GAIN3: {kind: process, params_prefix: GAIN3}
+  # sinks (DAC outputs + observation taps)
+  DAC0: {kind: sink}
+  DAC1: {kind: sink}
+  SPI_DAC0: {kind: sink}
+  SPI_DAC1: {kind: sink}
+  SCOPE0: {kind: sink}
+  SCOPE1: {kind: sink}
+
+# Hardwired wires (no selecting register). src -> dst is signal-flow direction.
+# (Latch = transparent sample-hold; folded into the GAINx -> DACx edge.)
+fixed_edges:
+  - [ADC0, BPF]
+  - [BPF, MIX]
+  - [ADC1, SVF]
+  - [SVF, MIX]
+  - [LPF0, PI]
+  - [GAIN0, DAC0]
+  - [GAIN1, DAC1]
+  - [GAIN2, SPI_DAC0]
+  - [GAIN3, SPI_DAC1]
+
+# One entry PER selectable destination. register = exact alias in the register
+# map; add `field:` if one register selects several dests. sources = {selector
+# integer value : source node}, taken from the RTL. Fill the maps from dsp_tp.sv.
+selectors:
+  - dest: LPF0            # "INPUT SEL"
+    register: INPUT_SEL
+    sources: {0: MIX}     # TODO fill full map from RTL (UNKNOWN for unclear values)
+  - dest: LPF1            # "PI SEL" selects which PID term propagates
+    register: PI_SEL
+    sources: {0: PI}      # e.g. {0: PI(P+I), 1: PI(P), 2: PI(I)} - confirm from RTL
+  - dest: DAC0            # "OUTPUT SEL" (one entry per DAC/gain it drives)
+    register: OUTPUT_SEL
+    sources: {0: LPF1}    # TODO fill
+  - dest: SCOPE0
+    register: SCOPE0_SEL
+    sources: {0: ADC0}    # TODO fill
+  - dest: SCOPE1
+    register: SCOPE1_SEL
+    sources: {0: ADC0}    # TODO fill
+  # OFFSET_SEL: add once its destination + sources are known from RTL
