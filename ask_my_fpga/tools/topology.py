@@ -22,9 +22,14 @@ def load_topology(cfg):
     return {"nodes": t.get("nodes", {}), "fixed_in": fixed_in, "sel_in": sel_in}
 
 def _sel_value(raw, field):
+    """Extract the selector value. field may be "[hi:lo]" (a range) or "[N]" (one bit)."""
     v = raw & 0xFFFFFFFF
-    if field:  # "[hi:lo]"
-        hi, lo = [int(x) for x in field.strip("[]").split(":")]
+    if field:
+        body = field.strip("[]").strip()
+        if ":" in body:
+            hi, lo = (int(x) for x in body.split(":"))
+        else:
+            hi = lo = int(body)
         v = (v >> lo) & ((1 << (hi - lo + 1)) - 1)
     return v
 
