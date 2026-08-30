@@ -2,7 +2,7 @@
 
 A read-only agent that answers natural-language questions about a Red Pitaya FPGA
 by inspecting the live hardware through the existing **SharpRPL C# API** and the
-`seeting.json` register catalog. Built to run under a coding-agent
+register catalog (settings JSON). Built to run under a coding-agent
 harness (pi.dev or opencode) driving a local LLM (gemma4 via vLLM).
 
 ## Layout

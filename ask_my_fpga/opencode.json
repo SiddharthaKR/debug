@@ -20,10 +20,15 @@
     "bash": {
       "*": "deny",
       "python3 tools/*": "allow",
-      "python tools/*": "allow"
+      "python tools/*": "allow",
+      "python3 write_tools/*": "allow",
+      "python write_tools/*": "allow"
     },
     "edit": "deny",
     "write": "deny",
     "patch": "deny"
-  }
+  },
+  "instructions": [
+    "WRITE_AGENTS.md"
+  ]
 }
