@@ -1,79 +1,33 @@
-# Datapath extracted from dsp_tp.sv via Copilot. Consumed by get_signal_path /
-# get_affecting_parameters. Rule: every wire is EITHER a fixed_edge (hardwired)
-# OR a selector source (mux-controlled), never both.
+# ---------------------------------------------------------------------------
+# TEST STUB ONLY. This is NOT the real datapath.
+# The complete dsp_tp.sv topology is kept off this machine (on the work PC).
+# This minimal graph exists only to exercise get_signal_path / topology_check
+# in replay mode. Replace with (or point config.topology_path at) the real file
+# when running live.
+# ---------------------------------------------------------------------------
 version: 1
 
 nodes:
-  ADC0: {kind: source}
-  ADC1: {kind: source}
-  ASG0: {kind: source}
-  ASG1: {kind: source}
-  BPF:  {kind: process, params_prefix: BPF}
-  SVF:  {kind: process, params_prefix: SVF}
-  MIX:  {kind: process, params_prefix: MIX}
-  INPUT_SEL: {kind: process, params_prefix: INPUT_SEL}
-  LPF0: {kind: process, params_prefix: LPF0}
-  PI0:  {kind: process, params_prefix: PI0}
-  PI0_P: {kind: process, params_prefix: PI0}
-  PI0_I: {kind: process, params_prefix: PI0}
-  PI_SEL: {kind: process, params_prefix: PI_SEL}
-  LPF1: {kind: process, params_prefix: LPF1}
-  PI1:  {kind: process, params_prefix: PI1}
-  LPF2: {kind: process, params_prefix: LPF2}
-  OUT_SEL: {kind: process, params_prefix: OUT_SEL}
+  ADC0:  {kind: source}
+  MIX:   {kind: process, params_prefix: MIX}
+  LPF0:  {kind: process, params_prefix: LPF0}
+  PI0:   {kind: process, params_prefix: PI0}
   GAIN0: {kind: process, params_prefix: GAIN0}
-  GAIN1: {kind: process, params_prefix: GAIN1}
-  GAIN2: {kind: process, params_prefix: GAIN2}
-  GAIN3: {kind: process, params_prefix: GAIN3}
-  SCOPE0_SEL: {kind: process, params_prefix: SCOPE0_SEL}
-  SCOPE1_SEL: {kind: process, params_prefix: SCOPE1_SEL}
-  DAC0: {kind: sink}
-  DAC1: {kind: sink}
-  SPI_DAC0: {kind: sink}
-  SPI_DAC1: {kind: sink}
+  DAC0:  {kind: sink}
   SCOPE0: {kind: sink}
-  SCOPE1: {kind: sink}
 
 fixed_edges:
-  - [ADC0, BPF]
-  - [ADC1, SVF]
+  - [ADC0, MIX]
   - [LPF0, PI0]
-  - [PI0, PI0_P]
-  - [PI0, PI0_I]
-  - [PI1, LPF2]
   - [GAIN0, DAC0]
-  - [GAIN1, DAC1]
-  - [GAIN2, SPI_DAC0]
-  - [GAIN3, SPI_DAC1]
 
 selectors:
   - dest: LPF0
     register: INPUT_SEL
     sources: {0: ADC0, 1: MIX}
-  - dest: LPF1
-    register: PI_SEL
-    sources: {0: ASG1, 1: PI0, 2: PI0_P, 3: PI0_I}
-  - dest: PI1
-    register: PI_SEL
-    sources: {0: ASG1, 1: PI0, 2: PI0_P, 3: PI0_I}
   - dest: GAIN0
     register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: GAIN1
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: GAIN2
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
-  - dest: GAIN3
-    register: OUT_SEL
-    sources: {0: LPF1, 1: LPF2}
+    sources: {0: PI0, 1: LPF0}
   - dest: SCOPE0
     register: SCOPE0_SEL
-    sources: {0: ADC0, 1: LPF0, 2: DAC0, 3: SPI_DAC0}
-  - dest: SCOPE1
-    register: SCOPE1_SEL
-    sources: {0: ADC1, 1: LPF0, 2: DAC0, 3: SPI_DAC0}
-  - dest: MIX
-    register: MIX_SELECT
-    sources: {0: BPF, 1: SVF}   # confirm which value is which
+    sources: {0: ADC0, 1: LPF0, 2: DAC0}
