@@ -24,6 +24,8 @@ directly possible (e.g. a scope can't tap PI0), get_reachable shows the workarou
   - set a signal-generator output via the C# output API.
 - `configure_scope.py SCOPE0|SCOPE1 [--source SIG] [--decimation N] [--start|--stop] [--apply]`
   - set what a scope taps (SCOPE_SEL register) and/or the acquisition sample rate.
+- `set_parameter.py NAME VALUE [--apply]` - set a module register in engineering units
+  (gains, coefficients, setpoints, offsets: PI0_SET_KP, GAIN0_GAIN, LPF0_ALPAH ...).
 
 ## Safety
 - Writes reroute LIVE signals - a set_signal_path can break a running lock/experiment.

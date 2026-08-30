@@ -362,3 +362,21 @@ def acq_control(cfg, which):   # which = "start" | "stop"
         return {"ok": True, "acquisition": which}
     except Exception as e:  # noqa
         return {"ok": False, "reason": "%s failed: %s" % (which, e)}
+
+
+def encode_value(value, entry):
+    """Human value -> raw register int, inverse of decode_value.
+    q: value * 2^frac (two's complement); float: IEEE-754 bits; uint32: int."""
+    t = (entry or {}).get("type", "uint32"); fmt = (entry or {}).get("format")
+    if t == "q":
+        frac = int(fmt.split(".")[1]) if (fmt and "." in fmt) else 0
+        raw = int(round(float(value) * (1 << frac)))
+        if raw < -(1 << 31) or raw > (1 << 31) - 1:
+            raise ValueError("%s out of range for %s (32-bit)" % (value, fmt))
+        return raw & 0xFFFFFFFF
+    if t == "float":
+        return struct.unpack("<I", struct.pack("<f", float(value)))[0]
+    iv = int(value)
+    if iv < 0 or iv > 0xFFFFFFFF:
+        raise ValueError("%s out of uint32 range" % value)
+    return iv & 0xFFFFFFFF
