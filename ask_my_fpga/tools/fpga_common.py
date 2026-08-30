@@ -6,7 +6,7 @@ Provenance kinds emitted by every tool:
   measurement - computed from acquired signal samples
   unknown     - could not be resolved/verified (never a silent wrong value)
 """
-import json, os, struct, urllib.request, urllib.parse
+import json, os, ssl, struct, urllib.request, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FACT, CONFIG, MEASUREMENT, UNKNOWN = "fact", "config", "measurement", "unknown"
@@ -38,6 +38,8 @@ def load_config():
     cfg.setdefault("device_id_param", "deviceId")
     cfg.setdefault("read_body_key", "address")
     cfg.setdefault("bypass_proxy", True)
+    cfg.setdefault("verify_tls", False)
+    cfg.setdefault("ca_bundle", None)
     cfg.setdefault("mode", "live")
     cfg["_root"] = ROOT
     cfg["fixtures_dir"] = _abs(cfg.get("fixtures_dir", "fixtures"))
@@ -153,10 +155,19 @@ def _auth_headers(cfg):
     return h
 
 def _opener(cfg):
+    handlers = []
     # bypass any system/corporate proxy for local/LAN API calls (avoids 403 tunnel)
     if cfg.get("bypass_proxy", True):
-        return urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    return urllib.request.build_opener()
+        handlers.append(urllib.request.ProxyHandler({}))
+    # TLS: self-signed local server -> skip verify (default), or trust a ca_bundle
+    if cfg.get("base_url", "").lower().startswith("https"):
+        if cfg.get("verify_tls", False):
+            ctx = (ssl.create_default_context(cafile=cfg["ca_bundle"])
+                   if cfg.get("ca_bundle") else ssl.create_default_context())
+        else:
+            ctx = ssl._create_unverified_context()
+        handlers.append(urllib.request.HTTPSHandler(context=ctx))
+    return urllib.request.build_opener(*handlers)
 
 def _req(cfg, method, path, body=None):
     url = cfg["base_url"].rstrip("/") + path

@@ -1,5 +1,5 @@
 {
-  "base_url": "http://localhost:5000",
+  "base_url": "https://localhost:5000",
   "device_id": null,
   "adc_fullscale_v": 1.0,
   "adc_bits": 14,
@@ -23,5 +23,7 @@
   },
   "device_id_param": "deviceId",
   "read_body_key": "address",
-  "bypass_proxy": true
+  "bypass_proxy": true,
+  "verify_tls": false,
+  "ca_bundle": null
 }

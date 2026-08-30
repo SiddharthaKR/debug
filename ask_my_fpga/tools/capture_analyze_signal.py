@@ -6,7 +6,7 @@ Only the summary is returned - the raw sample array is never emitted, keeping it
 out of the LLM context. Live capture needs: numpy, websocket-client.
 Replay needs: numpy only.
 """
-import argparse, json, os, struct, sys
+import argparse, json, os, ssl, struct, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import fpga_common as fc
 
@@ -34,7 +34,9 @@ def capture_ws(cfg, channel, nsamples):
     tok = cfg.get("device_token")
     if tok:
         hdrs.append("%s: %s" % (cfg.get("device_token_header", "x-device-token"), tok))
-    ws = websocket.create_connection(url, timeout=cfg.get("timeout", 5), header=hdrs)
+    sslopt = ({"cert_reqs": ssl.CERT_NONE}
+              if url.startswith("wss") and not cfg.get("verify_tls", False) else None)
+    ws = websocket.create_connection(url, timeout=cfg.get("timeout", 5), header=hdrs, sslopt=sslopt)
     counts, dec = [], 1
     try:
         while len(counts) < nsamples:
