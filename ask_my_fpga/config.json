@@ -1,0 +1,38 @@
+{
+  "base_url": "https://localhost:5000",
+  "device_id": null,
+  "adc_fullscale_v": 1.0,
+  "adc_bits": 14,
+  "packet_samples": 2048,
+  "packet_magic": "0xDEADBEEF",
+  "timeout": 5,
+  "ws_path": "/ws/wave",
+  "mode": "replay",
+  "fixtures_dir": "fixtures",
+  "catalog_path": "fixtures/setting.sample.json",
+  "mux_map": null,
+  "_comment": "mode: 'live' -> talk to base_url + real catalog_path; 'replay' -> use fixtures. adc_fullscale_v: 1.0 for LV (+/-1V), 20.0 for HV. device_id null -> follow activeDeviceId from /api/status.",
+  "device_token": "",
+  "device_token_header": "x-device-token",
+  "headers": {},
+  "endpoints": {
+    "status": "/api/status",
+    "memory_read": "/api/device/memory/read",
+    "sessions": "/api/devices/sessions",
+    "output_status": "/api/output/status",
+    "acq_decimation": "/api/acquisition/decimation",
+    "acq_start": "/api/acquisition/start",
+    "acq_stop": "/api/acquisition/stop",
+    "output_stop": "/api/output/{channel}/stop"
+  },
+  "device_id_param": "deviceId",
+  "read_body_key": "address",
+  "bypass_proxy": true,
+  "verify_tls": false,
+  "ca_bundle": null,
+  "topology_path": "topology/topology.yaml",
+  "asg_channel_map": {
+    "ASG0": 1,
+    "ASG1": 2
+  }
+}

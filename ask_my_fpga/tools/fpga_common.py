@@ -380,3 +380,27 @@ def encode_value(value, entry):
     if iv < 0 or iv > 0xFFFFFFFF:
         raise ValueError("%s out of uint32 range" % value)
     return iv & 0xFFFFFFFF
+
+
+def output_stop(cfg, channel):
+    """Stop an output channel via POST /api/output/{channel}/stop."""
+    if cfg["mode"] == "replay":
+        sp = os.path.join(cfg["fixtures_dir"], "output_status.sample.json")
+        try:
+            st = _load_json(sp)
+        except Exception:
+            st = {}
+        k = "channel%s" % channel
+        if isinstance(st.get(k), dict):
+            st[k]["enabled"] = False
+        else:
+            st[k] = {"enabled": False}
+        json.dump(st, open(sp, "w"), indent=1)
+        return {"ok": True, "replay": True, "stopped": channel}
+    try:
+        dev = resolve_device_id(cfg)
+        path = "/api/output/%s/stop?deviceId=%s" % (channel, urllib.parse.quote(str(dev)))
+        http_post_json(cfg, path, None)
+        return {"ok": True, "stopped": channel}
+    except Exception as e:  # noqa
+        return {"ok": False, "reason": "stop failed: %s" % e}

@@ -1,0 +1,166 @@
+{
+ "version": 1,
+ "endianness": "little",
+ "aliases": {
+  "INPUT_SEL": "0x40300000",
+  "MIX_SELECT": "0x40300004",
+  "OUT_GAIN0_SEL": "0x40300008",
+  "OUT_GAIN1_SEL": "0x4030000C",
+  "OUT_GAIN2_SEL": "0x40300010",
+  "OUT_GAIN3_SEL": "0x40300014",
+  "PI_LPF1_SEL": "0x40300018",
+  "PI_I_SEL": "0x4030001C",
+  "SCOPE0_SEL": "0x40300020",
+  "SCOPE1_SEL": "0x40300024",
+  "PI0_SET_KP": "0x40300028",
+  "PI0_SET_KI": "0x4030002C",
+  "PI0_SET_KD": "0x40300030",
+  "GAIN0_GAIN": "0x40300034",
+  "GAIN3_GAIN": "0x40300038",
+  "GAIN3_MIN": "0x4030003C",
+  "GAIN3_MAX": "0x40300040",
+  "GAIN3_VOFFSET": "0x40300044",
+  "BPF_B0": "0x40300048",
+  "BPF_B1": "0x4030004C",
+  "BPF_B2": "0x40300050",
+  "BPF_A1": "0x40300054",
+  "BPF_A2": "0x40300058",
+  "LPF0_ALPAH": "0x4030005C"
+ },
+ "registers": [
+  {
+   "address": "INPUT_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "MIX_SELECT",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN0_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN1_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN2_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "OUT_GAIN3_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI_LPF1_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI_I_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "SCOPE0_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "SCOPE1_SEL",
+   "type": "uint32",
+   "value": 0
+  },
+  {
+   "address": "PI0_SET_KP",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_SET_KI",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "PI0_SET_KD",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN0_GAIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_GAIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_MIN",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_MAX",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "GAIN3_VOFFSET",
+   "type": "q",
+   "format": "Q15.16",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_B0",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_B1",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_B2",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_A1",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "BPF_A2",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  },
+  {
+   "address": "LPF0_ALPAH",
+   "type": "q",
+   "format": "Q1.23",
+   "value": 0.0
+  }
+ ]
+}
