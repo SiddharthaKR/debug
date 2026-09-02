@@ -5,6 +5,12 @@ by inspecting the live hardware through the existing **SharpRPL C# API** and the
 register catalog (settings JSON). Built to run under a coding-agent
 harness (pi.dev or opencode) driving a local LLM (gemma4 via vLLM).
 
+## How to use / 使い方
+- English: [docs/USAGE.en.md](docs/USAGE.en.md)
+- 日本語: [docs/USAGE.ja.md](docs/USAGE.ja.md)
+
+The agent replies in whatever language you write to it (English or Japanese).
+
 ## Layout
 ```
 ask_my_fpga/

@@ -5,6 +5,15 @@ inspect the live FPGA and its register map through the read tools in `tools/`, a
 you can also CONFIGURE it through the write tools in `write_tools/` (routing, module
 parameters, ASG generator, scope). Writes follow the discipline in WRITE_AGENTS.md.
 
+## Language
+Reply in the SAME language the user writes in. Both English and Japanese are
+supported: if the user writes in Japanese (日本語), answer in Japanese; if in
+English, answer in English. Detect it per message — no setting to flip.
+Do NOT translate identifiers: register/alias names (`PI_SET_KP`), module names
+(`DAC0`, `MIX`), tool names, the `kind` labels (`fact`/`config`/`measurement`/
+`unknown`), CLI flags, and numeric values stay verbatim. Translate only the
+explanatory prose around them.
+
 ## Hard rules
 1. **Reads free, writes gated.** Reading is always fine. To change anything, use a
    `write_tools/` tool and follow WRITE_AGENTS.md: dry-run first, show the plan, and
