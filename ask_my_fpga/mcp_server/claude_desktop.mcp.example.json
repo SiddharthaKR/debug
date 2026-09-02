@@ -1,0 +1,12 @@
+{
+  "_comment": "Add this to Claude Desktop's claude_desktop_config.json. Use ABSOLUTE paths.",
+  "mcpServers": {
+    "ask-my-fpga": {
+      "command": "python3",
+      "args": ["/ABSOLUTE/PATH/TO/ask_my_fpga/mcp_server/server.py"],
+      "env": {
+        "FPGA_AGENT_CONFIG": "/ABSOLUTE/PATH/TO/ask_my_fpga/config.json"
+      }
+    }
+  }
+}

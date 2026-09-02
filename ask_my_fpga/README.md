@@ -11,6 +11,8 @@ harness (pi.dev or opencode) driving a local LLM (gemma4 via vLLM).
 
 The agent replies in whatever language you write to it (English or Japanese).
 
+MCP server (optional, harness-agnostic): [docs/MCP.md](docs/MCP.md) · [docs/MCP.ja.md](docs/MCP.ja.md)
+
 ## Layout
 ```
 ask_my_fpga/

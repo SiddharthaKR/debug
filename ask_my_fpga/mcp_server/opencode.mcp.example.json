@@ -1,0 +1,13 @@
+{
+  "_comment": "Merge this 'mcp' block into your opencode.json to expose Ask My FPGA as an MCP server. Paths are relative to where you launch opencode; use absolute paths if unsure. Reads + plan_* are safe; commit_write is the only tool that changes hardware.",
+  "mcp": {
+    "ask-my-fpga": {
+      "type": "local",
+      "command": ["python3", "mcp_server/server.py"],
+      "enabled": true,
+      "environment": {
+        "FPGA_AGENT_CONFIG": "config.json"
+      }
+    }
+  }
+}
