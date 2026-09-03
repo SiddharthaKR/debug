@@ -87,6 +87,8 @@ Example prompts:
   waits for your OK, then applies.
 - "Set GAIN0_GAIN to 1.5."
 - "Generate a 1 kHz sine, 0.2 V amplitude, on ASG1."
+  (ASG0/ASG1 are the signal generators, not catalog modules — under the hood the agent
+  runs `configure_asg ASG1 --waveform SINE --freq 1000 --amp 0.2`.)
 - "Set SCOPE0 to tap LPF2 and start acquisition."
 
 If a change is impossible (e.g. a scope can't tap that node), the agent says so

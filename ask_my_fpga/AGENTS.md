@@ -44,7 +44,9 @@ do not work around it.
 Run each as `python3 tools/<name>.py [args]`. All print JSON.
 
 - `get_status.py` — server reachability + status snapshot (kind=fact). Run this first.
-- `get_modules.py` — list FPGA modules (kind=config).
+- `get_modules.py` — list register-catalog modules + `generators` (ASG0/ASG1) (kind=config).
+  NOTE: ASG0/ASG1 are signal-generator OUTPUTS, not catalog modules; they appear under
+  `generators`, never `modules`. Never validate an ASG with get_modules/get_parameter.
 - `get_register_info.py NAME` — catalog metadata for one register (kind=config/unknown).
 - `get_parameter.py NAME` — live value + decoded engineering units (kind=fact/unknown).
 - `get_fpga_state.py [--modules PI,MIX]` — curated per-module live snapshot (kind=fact).
@@ -62,6 +64,9 @@ Run each as `python3 tools/<name>.py [args]`. All print JSON.
 ## How to answer typical questions
 - "What is PI_SET_KP?" → `get_parameter.py PI_SET_KP`; report value + address, kind=fact.
 - "What registers belong to PI?" → `get_modules.py`, then `get_register_info.py` as needed.
+- "Generate / stop a signal on ASG0 or ASG1" → this is a WRITE: use `configure_asg`
+  (see WRITE_AGENTS.md). ASG is an OUTPUT channel, not a catalog module — do NOT look it
+  up with get_modules or get_parameter; go straight to configure_asg.
 - "What is the signal path to DAC0?" → `get_signal_path.py DAC0`; report the live
   path, tagging fixed hops as documented (config) and selector hops as measured (fact).
 - "What modules can affect DAC0?" → `get_signal_path.py DAC0`; the `upstream_nodes`

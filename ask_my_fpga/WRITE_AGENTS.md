@@ -27,6 +27,16 @@ directly possible (e.g. a scope can't tap PI0), get_reachable shows the workarou
 - `set_parameter.py NAME VALUE [--apply]` - set a module register in engineering units
   (gains, coefficients, setpoints, offsets: PI0_SET_KP, GAIN0_GAIN, LPF0_ALPAH ...).
 
+## Generators are outputs, not modules
+ASG0/ASG1 are signal-generator OUTPUTS (channels in `config.asg_channel_map`), not
+register-catalog modules. To generate or stop a signal, go straight to `configure_asg`.
+Do NOT verify an ASG with get_modules or get_parameter first - it is not there, and the
+task will look impossible when it is not.
+
+Example - "Generate a sine on ASG1" ->
+  `configure_asg.py ASG1 --waveform SINE --freq 1000 --amp 0.2`   (dry-run)
+  then add `--apply` after the user approves.
+
 ## Safety
 - Writes reroute LIVE signals - a set_signal_path can break a running lock/experiment.
   The dry-run shows the current routing you would overwrite; surface it to the user.

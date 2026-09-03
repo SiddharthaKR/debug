@@ -56,8 +56,12 @@ def get_modules():
     """List the FPGA modules known to the register catalog. kind=config."""
     c = fc.load_config(); cat = fc.load_catalog(c)
     counts = {m: len(rs) for m, rs in sorted(cat["modules"].items())}
+    gens = sorted((c.get("asg_channel_map") or {}).keys())
     return tagged(CONFIG, modules=sorted(counts), register_counts=counts,
-                  source=os.path.basename(c["catalog_path"]))
+                  generators=gens, source=os.path.basename(c["catalog_path"]),
+                  note="'modules' are register-catalog blocks; 'generators' (ASG0/ASG1) are "
+                       "signal-generator OUTPUTS configured via configure_asg/plan_configure_asg "
+                       "- not catalog modules, and they have no registers here")
 
 def get_parameter(name):
     """Read one named parameter live and decode it to engineering units
