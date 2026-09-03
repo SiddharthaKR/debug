@@ -62,6 +62,19 @@ opencode は `AGENTS.md`（読み取りルール）と `WRITE_AGENTS.md`（書�
 設定します。まずサーバーを確認します:「ステータスチェックを実行して。」
 （`get_status.py` を使用）。
 
+## 複数の Red Pitaya — 1 セッション 1 台
+ボードごとに専用の設定ファイルを用意し、各セッションを 1 台に固定します。
+`config.rp1.example.json` / `config.rp2.example.json` を `config.rp1.json` /
+`config.rp2.json` にコピーし、それぞれの `device_id` と `device_token`（ボードごとに
+RTL が異なる場合は `catalog_path` / `topology_path` も）を設定してから、ボードごとに
+セッションを起動します:
+```
+FPGA_AGENT_CONFIG=config.rp1.json opencode
+FPGA_AGENT_CONFIG=config.rp2.json opencode   # 別のターミナルで
+```
+1 つのセッションは正確に 1 台の Red Pitaya と通信します — 複数台なら複数ターミナルで。
+トークンはこれらのローカルファイルに保持し、チャットには決して載せません。
+
 ## 5. 質問する（読み取り — 常に安全）
 読み取りはハードウェアを一切変更しません。プロンプト例:
 - 「DAC0 への信号経路は?」

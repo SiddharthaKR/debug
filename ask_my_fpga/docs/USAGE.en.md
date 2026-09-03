@@ -60,6 +60,18 @@ is the safest way to learn the loop. Then ask, for example:
 Set `"mode": "live"` and a real `base_url` + `catalog_path` in `config.json`.
 Confirm the server first: "Run a status check." (uses `get_status.py`).
 
+## Multiple Red Pitayas — one board per session
+Bind each board to its own session with a per-board config file. Copy
+`config.rp1.example.json` / `config.rp2.example.json` to `config.rp1.json` /
+`config.rp2.json`, set each one's `device_id` and `device_token` (and, if the boards run
+different RTL, their `catalog_path` / `topology_path`), then launch one session per board:
+```
+FPGA_AGENT_CONFIG=config.rp1.json opencode
+FPGA_AGENT_CONFIG=config.rp2.json opencode   # in another terminal
+```
+One session talks to exactly one Red Pitaya — run several terminals for several boards.
+Tokens stay in these local files, never in chat.
+
 ## 5. Asking questions (read — always safe)
 Reading never changes the hardware. Example prompts:
 - "What is the signal path to DAC0?"

@@ -4,6 +4,8 @@ __pycache__/
 
 # Local & proprietary — NEVER push (kept on your machine only)
 config.json                     # has your token / base_url
+config.rp*.json                 # real per-board configs (tokens) - keep local
+!config.rp*.example.json        # ...but DO track the sanitized templates
 topology/topology.yaml          # your real datapath
 fixtures/setting.sample.json    # your register names
 fixtures/mem.sample.json        # your register values
