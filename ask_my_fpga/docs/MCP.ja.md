@@ -50,6 +50,17 @@ python3 mcp_server/server.py                     # stdio で MCP を話す
   にマージします。
 - **Claude Desktop:** `mcp_server/claude_desktop.mcp.example.json`（絶対パスで）を
   `claude_desktop_config.json` に追加します。
+- **VS Code + Continue（ローカルモデル — オンプレ推奨）:** `mcp_server/continue.mcp.example.yaml`
+  を `~/.continue/config.yaml` にマージ。ローカルの gemma4（vLLM）を使うため、データは
+  マシン外に出ません。Continue の Agent モードは各ツール呼び出し前に確認するので、これが
+  plan -> confirm のレビューになります。
+- **VS Code + GitHub Copilot（Agent モード）:** `mcp_server/vscode.mcp.example.json` を
+  `.vscode/mcp.json` として追加。動作しますが Copilot は**クラウド**モデルを使うため、
+  レジスタマップやツール結果がマシン外に出ます。許容できる場合のみ使用してください。
+
+VS Code のどちらのクライアントでも**絶対パス**（command・スクリプト・config）を使い、
+vLLM が tool-calling 有効（`--enable-auto-tool-choice --tool-call-parser ...`）で起動
+されていることを確認してください。無効だとツールは列挙されるだけで呼び出されません。
 
 plan/commit の分割が書き込み前の人間による確認をすでに強制しているため、MCP 経路では
 bash 許可リストは不要です。クライアントがツール単位の承認に対応していれば、

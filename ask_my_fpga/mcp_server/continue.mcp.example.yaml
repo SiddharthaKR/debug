@@ -1,0 +1,39 @@
+# Continue (VS Code) config for Ask My FPGA over MCP.
+# Merge these blocks into ~/.continue/config.yaml on the machine that runs VS Code
+# (here: the server that hosts vLLM + the C# API, so all hops are local).
+# Replace /ABS/PATH with the absolute path to the ask_my_fpga repo on that machine.
+# All paths are ABSOLUTE so it works regardless of the client's working directory.
+
+models:
+  # Local gemma4 via vLLM - keeps everything on-prem (no cloud model).
+  - name: gemma4 (vLLM)
+    provider: openai
+    model: gemma4
+    apiBase: http://localhost:8000/v1
+    apiKey: dummy
+    roles:
+      - chat
+    # NOTE: Continue "Agent" mode invokes MCP tools via the model's TOOL-CALLING.
+    # vLLM must be started with tool-calling enabled, e.g.:
+    #   --enable-auto-tool-choice --tool-call-parser <parser-for-your-model>
+    # If not enabled, the tools are listed but the model cannot call them.
+
+mcpServers:
+  - name: ask-my-fpga
+    # Use the venv Python that has mcp + pyyaml installed - NOT bare "python3".
+    command: /ABS/PATH/ask_my_fpga/.venv/bin/python
+    args:
+      - /ABS/PATH/ask_my_fpga/mcp_server/server.py
+    cwd: /ABS/PATH/ask_my_fpga
+    env:
+      # Absolute so it resolves no matter what cwd the client uses.
+      # Point at config.rp1.json / config.rp2.json to bind a specific board.
+      FPGA_AGENT_CONFIG: /ABS/PATH/ask_my_fpga/config.json
+
+# --- Older Continue (config.json) equivalent ---
+# { "experimental": { "modelContextProtocolServers": [
+#     { "transport": { "type": "stdio",
+#         "command": "/ABS/PATH/ask_my_fpga/.venv/bin/python",
+#         "args": ["/ABS/PATH/ask_my_fpga/mcp_server/server.py"],
+#         "cwd": "/ABS/PATH/ask_my_fpga",
+#         "env": { "FPGA_AGENT_CONFIG": "/ABS/PATH/ask_my_fpga/config.json" } } } ] } }

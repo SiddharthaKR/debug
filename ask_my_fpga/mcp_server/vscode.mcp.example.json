@@ -1,0 +1,12 @@
+{
+  "_comment": "VS Code + GitHub Copilot (Agent mode) MCP config. Save as .vscode/mcp.json in your workspace (or merge into the 'mcp' section of settings.json). Replace /ABS/PATH. NOTE: Copilot Agent mode uses a CLOUD model, so your register map / tool results leave the machine to that model - only use it where that is acceptable; for on-prem-only, use Continue with local vLLM instead. Absolute paths make it cwd-independent.",
+  "servers": {
+    "ask-my-fpga": {
+      "type": "stdio",
+      "command": "/ABS/PATH/ask_my_fpga/.venv/bin/python",
+      "args": ["/ABS/PATH/ask_my_fpga/mcp_server/server.py"],
+      "cwd": "/ABS/PATH/ask_my_fpga",
+      "env": { "FPGA_AGENT_CONFIG": "/ABS/PATH/ask_my_fpga/config.json" }
+    }
+  }
+}

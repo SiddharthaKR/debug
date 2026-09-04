@@ -46,6 +46,18 @@ live use.
   `opencode.json`.
 - **Claude Desktop:** add `mcp_server/claude_desktop.mcp.example.json` (with
   absolute paths) to `claude_desktop_config.json`.
+- **VS Code + Continue (local model — recommended for on-prem):** merge
+  `mcp_server/continue.mcp.example.yaml` into `~/.continue/config.yaml`. Drives your
+  local gemma4 (vLLM), so nothing leaves the machine. Continue's Agent mode prompts
+  before each tool call, which is your plan -> confirm review.
+- **VS Code + GitHub Copilot (Agent mode):** add `mcp_server/vscode.mcp.example.json`
+  as `.vscode/mcp.json`. Works, but Copilot uses a **cloud** model — your register map
+  and tool results leave the machine, so use it only where that is acceptable.
+
+For both VS Code clients use **absolute paths** (command, script, config), and make
+sure vLLM was started with tool-calling enabled
+(`--enable-auto-tool-choice --tool-call-parser ...`) — otherwise the tools are listed
+but the model never calls them.
 
 Because the plan/commit split already forces a human review before any write,
 you don't need a bash allowlist for the MCP path. If your client supports
