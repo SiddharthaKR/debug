@@ -13,6 +13,9 @@ The agent replies in whatever language you write to it (English or Japanese).
 
 MCP server (optional, harness-agnostic): [docs/MCP.md](docs/MCP.md) · [docs/MCP.ja.md](docs/MCP.ja.md)
 
+App description (for RAG): [docs/APP_DESCRIPTION.en.md](docs/APP_DESCRIPTION.en.md) · [docs/APP_DESCRIPTION.ja.md](docs/APP_DESCRIPTION.ja.md)
+Question cookbook (how to ask): [docs/QUESTIONS.en.md](docs/QUESTIONS.en.md) · [docs/QUESTIONS.ja.md](docs/QUESTIONS.ja.md)
+
 ## Layout
 ```
 ask_my_fpga/

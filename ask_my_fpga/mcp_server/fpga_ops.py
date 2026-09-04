@@ -46,11 +46,14 @@ def get_status():
     """Connectivity / status snapshot from the SharpRPL server (GET /api/status).
     Run this first to confirm the app is reachable. kind=fact."""
     c = fc.load_config()
+    cfgfile = os.path.basename(fc._cfg_path())
     try:
-        return tagged(FACT, endpoint="status", base_url=c.get("base_url"),
-                      data=fc.call_api(c, "status"))
+        return tagged(FACT, endpoint="status", config_file=cfgfile,
+                      device_id=c.get("device_id"), mode=c.get("mode"),
+                      base_url=c.get("base_url"), data=fc.call_api(c, "status"))
     except Exception as e:  # noqa
-        return tagged(UNKNOWN, endpoint="status", base_url=c.get("base_url"), reason=str(e))
+        return tagged(UNKNOWN, endpoint="status", config_file=cfgfile,
+                      base_url=c.get("base_url"), reason=str(e))
 
 def get_modules():
     """List the FPGA modules known to the register catalog. kind=config."""

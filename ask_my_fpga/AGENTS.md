@@ -64,6 +64,9 @@ Run each as `python3 tools/<name>.py [args]`. All print JSON.
 ## How to answer typical questions
 - "What is PI_SET_KP?" → `get_parameter.py PI_SET_KP`; report value + address, kind=fact.
 - "What registers belong to PI?" → `get_modules.py`, then `get_register_info.py` as needed.
+- "Which config / device am I using?" → `get_status.py`; report `config_file`, `device_id`,
+  `mode`. NEVER guess from `ls` — only get_status knows the resolved config (it honors
+  the `FPGA_AGENT_CONFIG` env var).
 - "Generate / stop a signal on ASG0 or ASG1" → this is a WRITE: use `configure_asg`
   (see WRITE_AGENTS.md). ASG is an OUTPUT channel, not a catalog module — do NOT look it
   up with get_modules or get_parameter; go straight to configure_asg.
